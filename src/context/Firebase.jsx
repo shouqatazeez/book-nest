@@ -12,6 +12,7 @@ const firebaseConfig = {
   appId: "1:599559109980:web:09c66f7461197cee301599",
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useFirebase = () => useContext(FirebaseContext);
 
 // eslint-disable-next-line no-unused-vars
