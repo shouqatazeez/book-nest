@@ -1,0 +1,22 @@
+import { createContext, useContext } from "react";
+import { initializeApp } from "firebase/app";
+
+const FirebaseContext = createContext(null);
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBgZZDn5B4dECeOUsGCdL9kGRJJYMDXKdI",
+  authDomain: "bookify-712d1.firebaseapp.com",
+  projectId: "bookify-712d1",
+  storageBucket: "bookify-712d1.firebasestorage.app",
+  messagingSenderId: "599559109980",
+  appId: "1:599559109980:web:09c66f7461197cee301599",
+};
+
+export const useFirebase = () => useContext(FirebaseContext);
+
+// eslint-disable-next-line no-unused-vars
+const firebaseApp = initializeApp(firebaseConfig);
+
+export const FirebaseProvider = (props) => {
+  return <FirebaseContext.Provider>{props.children}</FirebaseContext.Provider>;
+};
