@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useFirebase } from "../context/Firebase";
 
-const RegisterPage = () => {
+const LoginPage = () => {
   const firebase = useFirebase();
 
   const [email, setEmail] = useState("");
@@ -11,11 +11,8 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("signin up a user");
-    const result = await firebase.signupUserWithEmailAndPassword(
-      email,
-      password
-    );
+    console.log("login in a user");
+    const result = await firebase.signInWithEmailAndPass(email, password);
 
     console.log("successfull", result);
   };
@@ -31,9 +28,6 @@ const RegisterPage = () => {
             type="email"
             placeholder="Enter email"
           />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -46,11 +40,11 @@ const RegisterPage = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Create Account
+          Login
         </Button>
       </Form>
     </div>
   );
 };
 
-export default RegisterPage;
+export default LoginPage;
