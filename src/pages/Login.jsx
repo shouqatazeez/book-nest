@@ -54,7 +54,6 @@ const LoginPage = () => {
 
       <h3 className="mt-5 mb-5">OR</h3>
       <Button onClick={firebase.signinwithGoogle} variant="danger">
-        {" "}
         Signin with Google
       </Button>
     </div>
