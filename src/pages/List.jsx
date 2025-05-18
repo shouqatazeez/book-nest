@@ -5,6 +5,8 @@ import Form from "react-bootstrap/Form";
 const List = () => {
   const [name, setName] = useState("");
   const [isbnNumber, setIsbnNumber] = useState("");
+  const [price, setPrice] = useState("");
+  const [Coverpic, setCoverpic] = useState("");
 
   const handleSubmit = () => {};
 
@@ -32,12 +34,21 @@ const List = () => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>ISBN</Form.Label>
+          <Form.Label>price</Form.Label>
           <Form.Control
-            onChange={(e) => setIsbnNumber(e.target.value)}
-            value={isbnNumber}
+            onChange={(e) => setPrice(e.target.value)}
+            value={price}
             type="text"
-            placeholder="ISBN Number"
+            placeholder="Enter Price"
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Coverpic</Form.Label>
+          <Form.Control
+            onChange={(e) => setCoverpic(e.target.files[0])}
+            value={price}
+            type="file"
           />
         </Form.Group>
 
