@@ -7,8 +7,9 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
 import axios from "axios";
 
 const FirebaseContext = createContext(null);
@@ -17,7 +18,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyBgZZDn5B4dECeOUsGCdL9kGRJJYMDXKdI",
   authDomain: "bookify-712d1.firebaseapp.com",
   projectId: "bookify-712d1",
-  storageBucket: "bookify-712d1.firebasestorage.app",
+  storageBucket: "bookify-712d1.appspot.com",
   messagingSenderId: "599559109980",
   appId: "1:599559109980:web:09c66f7461197cee301599",
 };
@@ -26,7 +27,7 @@ export const useFirebase = () => useContext(FirebaseContext);
 
 const firebaseApp = initializeApp(firebaseConfig);
 const firebaseAuth = getAuth(firebaseApp);
-const firestorage = getFirestore(firebaseApp);
+const firestore = getFirestore(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
 
 export const FirebaseProvider = (props) => {
@@ -34,8 +35,7 @@ export const FirebaseProvider = (props) => {
 
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
-      if (user) setUser(user);
-      else setUser(null);
+      setUser(user ?? null);
     });
   }, []);
 
@@ -47,12 +47,15 @@ export const FirebaseProvider = (props) => {
 
   const signinwithGoogle = () => signInWithPopup(firebaseAuth, googleProvider);
 
+  const logout = () => signOut(firebaseAuth);
+
   const handleCreateNewListing = async (name, isbn, price, coverFile) => {
     try {
       const formData = new FormData();
       formData.append("file", coverFile);
       formData.append("upload_preset", "bookcovers");
       formData.append("folder", "samples/ecommerce");
+
       const cloudinaryRes = await axios.post(
         "https://api.cloudinary.com/v1_1/djewtls9w/image/upload",
         formData
@@ -60,8 +63,7 @@ export const FirebaseProvider = (props) => {
 
       const imageUrl = cloudinaryRes.data.secure_url;
 
-      // Step 2: Store listing data in Firestore
-      await addDoc(collection(firestorage, "books"), {
+      await addDoc(collection(firestore, "books"), {
         name,
         isbn,
         price,
@@ -77,6 +79,10 @@ export const FirebaseProvider = (props) => {
     }
   };
 
+  const listAllBooks = () => {
+    return getDocs(collection(firestore, "books"));
+  };
+
   const isLoggedIn = !!user;
 
   return (
@@ -86,7 +92,10 @@ export const FirebaseProvider = (props) => {
         signInWithEmailAndPass,
         signinwithGoogle,
         handleCreateNewListing,
+        listAllBooks,
         isLoggedIn,
+        user,
+        logout,
       }}
     >
       {props.children}
