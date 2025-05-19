@@ -9,7 +9,7 @@ const About = () => {
         <Card.Body>
           <h1 className="text-center mb-4">📘 Welcome to BookNest</h1>
           <p className="text-center">
-            Bookify helps users explore, list, and manage books easily. Whether
+            BookNest helps users explore, list, and manage books easily. Whether
             you want to browse books or share your own, we’ve got you covered!
           </p>
 
