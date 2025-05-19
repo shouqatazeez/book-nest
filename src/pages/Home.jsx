@@ -45,8 +45,8 @@ const Home = () => {
               <Card.Body>
                 <Card.Title>{book.name}</Card.Title>
                 <Card.Text>
-                  <strong>ISBN:</strong> {book.isbn}
-                  <br />
+                  <strong>Author:</strong> {book.author || "Unknown"} <br />
+                  <strong>ISBN:</strong> {book.isbn} <br />
                   <strong>Price:</strong> ₹{book.price}
                 </Card.Text>
               </Card.Body>

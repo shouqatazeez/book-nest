@@ -15,12 +15,12 @@ import axios from "axios";
 const FirebaseContext = createContext(null);
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBgZZDn5B4dECeOUsGCdL9kGRJJYMDXKdI",
-  authDomain: "bookify-712d1.firebaseapp.com",
-  projectId: "bookify-712d1",
-  storageBucket: "bookify-712d1.appspot.com",
-  messagingSenderId: "599559109980",
-  appId: "1:599559109980:web:09c66f7461197cee301599",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 export const useFirebase = () => useContext(FirebaseContext);
@@ -49,7 +49,13 @@ export const FirebaseProvider = (props) => {
 
   const logout = () => signOut(firebaseAuth);
 
-  const handleCreateNewListing = async (name, isbn, price, coverFile) => {
+  const handleCreateNewListing = async (
+    name,
+    author,
+    isbn,
+    price,
+    coverFile
+  ) => {
     try {
       const formData = new FormData();
       formData.append("file", coverFile);
@@ -65,6 +71,7 @@ export const FirebaseProvider = (props) => {
 
       await addDoc(collection(firestore, "books"), {
         name,
+        author,
         isbn,
         price,
         imageUrl,

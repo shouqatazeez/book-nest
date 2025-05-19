@@ -5,7 +5,9 @@ import { useFirebase } from "../context/Firebase";
 
 const List = () => {
   const firebase = useFirebase();
+
   const [name, setName] = useState("");
+  const [author, setAuthor] = useState("");
   const [isbnNumber, setIsbnNumber] = useState("");
   const [price, setPrice] = useState("");
   const [coverPic, setCoverPic] = useState("");
@@ -15,8 +17,15 @@ const List = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await firebase.handleCreateNewListing(name, isbnNumber, price, coverPic);
+      await firebase.handleCreateNewListing(
+        name,
+        author,
+        isbnNumber,
+        price,
+        coverPic
+      );
       setName("");
+      setAuthor("");
       setIsbnNumber("");
       setPrice("");
       setCoverPic("");
@@ -37,6 +46,17 @@ const List = () => {
             value={name}
             type="text"
             placeholder="Book name"
+            required
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Author Name</Form.Label>
+          <Form.Control
+            onChange={(e) => setAuthor(e.target.value)}
+            value={author}
+            type="text"
+            placeholder="Author name"
             required
           />
         </Form.Group>
