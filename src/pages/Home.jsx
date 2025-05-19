@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useFirebase } from "../context/Firebase";
-import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -33,7 +32,6 @@ const Home = () => {
 
   return (
     <Container className="mt-4">
-      <h1 className="mb-4 text-center">Welcome to Bookify</h1>
       <Row className="g-4">
         {books.map((book) => (
           <Col key={book.id} xs={12} sm={6} md={4} lg={3}>
