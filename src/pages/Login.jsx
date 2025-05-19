@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Spinner from "react-bootstrap/Spinner";
 import { useFirebase } from "../context/Firebase";
 
 const LoginPage = () => {
@@ -10,23 +11,43 @@ const LoginPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (firebase.isLoggedIn) {
-      navigate("/");
+      navigate("/home");
     }
-  }, [firebase, navigate]);
+  }, [firebase.isLoggedIn, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("login in a user");
-    const result = await firebase.signInWithEmailAndPass(email, password);
+    setLoading(true);
+    try {
+      await firebase.signInWithEmailAndPass(email, password);
+      navigate("/home");
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Login failed. Please check your credentials.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    console.log("successfull", result);
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      await firebase.signinwithGoogle();
+      navigate("/home");
+    } catch (error) {
+      console.error("Google sign in failed:", error);
+      alert("Google sign in failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="container mt-5 ">
+    <div className="container mt-5">
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
@@ -35,6 +56,8 @@ const LoginPage = () => {
             value={email}
             type="email"
             placeholder="Enter email"
+            required
+            disabled={loading}
           />
         </Form.Group>
 
@@ -45,16 +68,45 @@ const LoginPage = () => {
             value={password}
             type="password"
             placeholder="Password"
+            required
+            disabled={loading}
           />
         </Form.Group>
-        <Button variant="primary" type="submit">
-          Login
+
+        <Button variant="primary" type="submit" disabled={loading}>
+          {loading ? (
+            <>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />{" "}
+              Logging in...
+            </>
+          ) : (
+            "Login"
+          )}
         </Button>
       </Form>
 
-      <h3 className="mt-5 mb-5">OR</h3>
-      <Button onClick={firebase.signinwithGoogle} variant="danger">
-        Signin with Google
+      <h3 className="mt-5 mb-3">OR</h3>
+      <Button onClick={handleGoogleSignIn} variant="danger" disabled={loading}>
+        {loading ? (
+          <>
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />{" "}
+            Processing...
+          </>
+        ) : (
+          "Signin with Google"
+        )}
       </Button>
     </div>
   );
